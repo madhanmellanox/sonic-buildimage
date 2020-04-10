@@ -27,20 +27,20 @@ FAN_DIR = "/var/run/hw-management/system/fan_dir"
 
 # SKUs with unplugable FANs:
 # 1. don't have fanX_status and should be treated as always present
-hwsku_dict_with_unplugable_fan = ['ACS-MSN2010', 'ACS-MSN2100']
+platform_dict_with_unplugable_fan = ['x86_64-mlnx_msn2010-r0', 'x86_64-mlnx_msn2100-r0']
 
 class Fan(FanBase):
     """Platform-specific Fan class"""
 
     STATUS_LED_COLOR_ORANGE = "orange"
 
-    def __init__(self, has_fan_dir, fan_index, drawer_index = 1, psu_fan = False, sku = None):
+    def __init__(self, has_fan_dir, fan_index, drawer_index = 1, psu_fan = False, platform = None):
         # API index is starting from 0, Mellanox platform index is starting from 1
         self.index = fan_index + 1
         self.drawer_index = drawer_index + 1
 
         self.is_psu_fan = psu_fan
-        self.always_presence = False if sku not in hwsku_dict_with_unplugable_fan else True
+        self.always_presence = False if platform not in platform_dict_with_unplugable_fan else True
 
         self.fan_min_speed_path = "fan{}_min".format(self.index)
         if not self.is_psu_fan:
